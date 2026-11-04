@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gestão GRC/AC · Implantação · Acesso Protheus</title>
+<style>
+:root{
+  --navy:#1A2340; --navy2:#263155; --brand:#EC0734; --ink:#1A2340; --text:#2B3445; --muted:#5B6578;
+  --line:#DDE2EA; --bg:#F3F5F9; --track:#EEF1F5; --zebra:#F8F9FC;
+  --amber:#8A5E00; --amber-bg:#FFF3CC; --done-bg:#E4E8F1; --green:#088A40; --gold:#C99700;
+  --shadow:0 1px 2px rgba(26,35,64,.05),0 6px 18px rgba(26,35,64,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,"Segoe UI",sans-serif;color:var(--text);background:var(--bg);line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4,p{margin:0}
+a{color:var(--ink)}
+
+/* Cabeçalho */
+.top{position:sticky;top:0;z-index:20;background:var(--navy);box-shadow:0 2px 12px rgba(10,15,35,.25)}
+.top-in{max-width:1220px;margin:0 auto;padding:14px 5vw;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
+.brand{color:#fff;text-decoration:none;font-weight:700;font-size:15px;line-height:1.25}
+.brand small{display:block;font-weight:400;font-size:12px;color:#B9C3DA;margin-top:2px}
+.nav{display:flex;gap:4px;flex-wrap:wrap}
+.nav a{color:#C9D1E3;text-decoration:none;font-weight:700;font-size:14px;padding:8px 13px;border-radius:999px}
+.nav a:hover{color:#fff;background:var(--navy2)}
+.nav a[aria-current="page"]{color:var(--navy);background:#fff}
+
+main{max-width:1220px;margin:0 auto;padding:40px 5vw 80px}
+.view{display:none}
+.view.on{display:block;animation:in .2s ease}
+@keyframes in{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+.eyebrow{font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--brand);margin-bottom:10px}
+h1{font-size:36px;line-height:1.15;color:var(--ink);letter-spacing:-.01em}
+h2{font-size:21px;color:var(--ink);margin:44px 0 14px;letter-spacing:-.005em}
+.lead{font-size:16px;color:var(--muted);max-width:760px;margin-top:12px}
+.src{font-size:12.5px;color:var(--muted);margin-top:14px}
+
+/* Home */
+.hero{background:#fff;border:1px solid var(--line);border-radius:16px;padding:36px 36px 30px;box-shadow:var(--shadow)}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:28px}
+.kpi{background:var(--zebra);border:1px solid var(--line);border-radius:12px;padding:18px 18px 16px}
+.kpi .n{font-size:30px;font-weight:700;color:var(--ink);line-height:1.1;letter-spacing:-.01em}
+.kpi .t{font-size:13.5px;color:var(--muted);margin-top:6px}
+.kpi.g .n{color:var(--green)}
+.kpi.a .n{color:var(--amber)}
+.menu{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:22px}
+.mcard{position:relative;display:flex;flex-direction:column;background:#fff;border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;text-decoration:none;color:inherit;box-shadow:var(--shadow);transition:transform .15s,border-color .15s,box-shadow .15s}
+.mcard:hover{transform:translateY(-2px);border-color:var(--navy);box-shadow:0 10px 26px rgba(26,35,64,.14)}
+.mcard .idx{width:34px;height:34px;border-radius:10px;background:var(--navy);color:#fff;font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.mcard h3{font-size:19px;color:var(--ink);margin:18px 0 8px}
+.mcard p{font-size:15px;color:var(--muted);flex:1}
+.mcard .go{margin-top:18px;font-weight:700;color:var(--ink);font-size:15px;display:flex;align-items:center;gap:8px}
+.mcard .go span{display:inline-flex;width:24px;height:24px;border-radius:50%;background:var(--track);align-items:center;justify-content:center;transition:background .15s}
+.mcard:hover .go span{background:var(--brand);color:#fff}
+
+/* Blocos */
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid2{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:var(--shadow)}
+.card h3{font-size:17px;color:var(--ink);margin-bottom:8px}
+.card p{font-size:15px}
+.btn{display:inline-flex;align-items:center;gap:6px;margin-top:16px;background:var(--navy);color:#fff;text-decoration:none;font-weight:700;font-size:15px;border-radius:8px;padding:11px 16px;border:0;cursor:pointer;font-family:inherit}
+.btn:hover{background:var(--brand)}
+.btn-line{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.btn-line:hover{background:var(--track);color:var(--ink)}
+.url{display:block;margin-top:10px;font-size:12px;color:var(--muted);word-break:break-all}
+
+/* Tabelas */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{background:var(--navy);color:#fff;text-align:left;padding:11px 14px;font-size:13px;font-weight:700}
+td{padding:11px 14px;border-top:1px solid var(--line);vertical-align:middle}
+tbody tr:nth-child(even) td{background:var(--zebra)}
+tr.tot td{background:var(--track);font-weight:700}
+td.c,th.c{text-align:center}
+.bar{display:inline-block;width:150px;height:9px;background:var(--track);border-radius:5px;overflow:hidden;vertical-align:middle;margin-right:10px}
+.bar i{display:block;height:100%;background:var(--navy);border-radius:5px}
+.bar i.amber{background:var(--amber)}
+.pill{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;white-space:nowrap}
+.p-done{background:var(--done-bg);color:var(--ink)}
+.p-run{background:var(--amber-bg);color:var(--amber)}
+
+/* Fluxo interativo */
+.flow-head{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:26px}
+.hd{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.hd .l{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.hd .v{font-size:15px;font-weight:700;color:var(--ink);margin-top:3px}
+.hd .s{font-size:12.5px;color:var(--muted);margin-top:2px}
+.hd.warn{background:#FFF8E0;border-color:#EBD58A}
+.hd.warn .l{color:#7A5800}
+.legend{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin:22px 0 12px;font-size:13px;color:var(--muted)}
+.legend .it{display:inline-flex;align-items:center;gap:8px}
+.lg{display:inline-block;width:16px;height:12px;border-radius:4px;border:1.5px solid var(--navy);background:#fff}
+.lg.dec{width:12px;height:12px;transform:rotate(45deg);background:#FFF3CC;border-color:var(--gold);border-radius:2px}
+.lg.ev{width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid var(--navy)}
+.lg.st{width:14px;height:14px;border-radius:50%;background:var(--green);border:0}
+.lg.en{width:14px;height:14px;border-radius:50%;background:var(--brand);border:0}
+.hint{font-size:13px;color:var(--navy);font-weight:700;margin-left:auto}
+.flow{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:var(--shadow);overflow-x:auto}
+.flow svg{display:block;width:100%;min-width:980px;height:auto}
+.node{cursor:pointer;outline:none}
+.node .sh{transition:stroke .15s,stroke-width .15s,fill .15s}
+.node:hover .sh,.node:focus-visible .sh{stroke:var(--brand);stroke-width:2.6}
+.node:hover .lbl,.node:focus-visible .lbl{fill:var(--brand)}
+.node .lbl{transition:fill .15s}
+.lane-name{font-size:14px;font-weight:700;fill:#fff}
+.edge{fill:none;stroke:#3D4A66;stroke-width:1.6}
+.etxt{font-size:12px;fill:var(--muted);font-weight:700}
+.ttl{font-size:14px;font-weight:700;fill:var(--ink)}
+.sub{font-size:12px;fill:var(--muted)}
+.dtxt{font-size:13px;font-weight:700;fill:var(--ink)}
+.badge-t{font-size:12px;font-weight:700;fill:#fff}
+
+/* Caixa de detalhamento */
+dialog{border:0;padding:0;border-radius:16px;width:min(560px,92vw);max-height:86vh;box-shadow:0 24px 60px rgba(10,15,35,.35);color:var(--text)}
+dialog::backdrop{background:rgba(20,28,52,.55)}
+.dlg{padding:26px 26px 22px;position:relative}
+.dlg-x{position:absolute;top:12px;right:12px;width:34px;height:34px;border-radius:50%;border:0;background:var(--track);color:var(--ink);font-size:20px;line-height:1;cursor:pointer}
+.dlg-x:hover{background:var(--brand);color:#fff}
+.dlg-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff;background:var(--navy);padding:4px 10px;border-radius:999px}
+.dlg h3{font-size:22px;color:var(--ink);margin:12px 0 4px;padding-right:30px}
+.dlg-lane{font-size:13px;color:var(--muted);font-weight:700}
+.dlg h4{font-size:12px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px}
+.dlg p{font-size:15px}
+.dlg ul{margin:0;padding-left:20px;font-size:15px}
+.dlg li{margin:4px 0}
+.dlg-note{margin-top:16px;background:#FFF8E0;border:1px solid #EBD58A;border-radius:8px;padding:10px 12px;font-size:13.5px;color:#5C4300}
+.dlg .btn{margin-top:20px}
+
+/* Etapas e caminhos */
+.step{display:grid;grid-template-columns:40px 1fr;gap:14px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;box-shadow:var(--shadow)}
+.num{width:36px;height:36px;border-radius:50%;background:var(--brand);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.who{font-size:11.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.step h3{font-size:17px;color:var(--ink);margin:3px 0 6px}
+.step ul{margin:6px 0 0;padding-left:18px;font-size:15px}
+.step li{margin:3px 0}
+.key{background:var(--navy);color:#fff;border-radius:14px;padding:22px 24px;margin-top:26px}
+.key .tag{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#B9C3DA}
+.key .big{font-size:22px;font-weight:700;color:#FFD15C;margin:6px 0 6px}
+.key p{color:#E8EDF7;font-size:15px}
+.path{font-size:15px;line-height:1.75}
+.path b{color:var(--ink)}
+
+@media (max-width:860px){
+  .menu,.grid3,.grid2,.flow-head{grid-template-columns:1fr}
+  .kpis{grid-template-columns:1fr 1fr}
+  h1{font-size:28px}
+  .hero{padding:24px}
+  .bar{width:90px}
+  .hint{margin-left:0;width:100%}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#home">Gestão GRC/AC · Implantação<small>Acesso Protheus</small></a>
+    <nav class="nav" aria-label="Seções">
+      <a href="#home" data-nav="home">Início</a>
+      <a href="#status" data-nav="status">Status report</a>
+      <a href="#repositorio" data-nav="repositorio">Repositório e fluxo</a>
+      <a href="#processo" data-nav="processo">Detalhamento</a>
+      <a href="https://planner.cloud.microsoft/ui/web/plan/HfxfbYLylkaSFn02fIZpxGQABCAG/view/board?tid=54a7d922-61f3-4c7e-aee5-71be05bd4c9c" target="_blank" rel="noopener noreferrer">Planner ↗</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- ============ INÍCIO ============ -->
+  <section class="view" id="home">
+    <div class="hero">
+      <div class="eyebrow">Projeto GRC/AC</div>
+      <h1>Gestão GRC/AC – Implantação</h1>
+      <p class="lead">Status do projeto, repositório de books e termos e detalhamento do processo de liberação e atualização de acesso ao Protheus.</p>
+      <div class="kpis">
+        <div class="kpi g"><div class="n">97,7%</div><div class="t">das ações concluídas (216 de 221)</div></div>
+        <div class="kpi"><div class="n">10 de 11</div><div class="t">gates concluídos</div></div>
+        <div class="kpi a"><div class="n">5</div><div class="t">ações em andamento, Gate 10</div></div>
+        <div class="kpi a"><div class="n">06/11</div><div class="t">prazo das ações em andamento</div></div>
+      </div>
+      <a class="btn" style="margin-top:20px" href="https://planner.cloud.microsoft/ui/web/plan/HfxfbYLylkaSFn02fIZpxGQABCAG/view/board?tid=54a7d922-61f3-4c7e-aee5-71be05bd4c9c" target="_blank" rel="noopener noreferrer">Abrir Planner ↗</a>
+    </div>
+
+    <div class="menu">
+      <a class="mcard" href="#status">
+        <span class="idx">01</span>
+        <h3>Status Report (completo)</h3>
+        <p>Ações concluídas, em andamento e atrasadas, status de cada gate com percentuais e objetivos do projeto.</p>
+        <span class="go">Abrir status <span>→</span></span>
+      </a>
+      <a class="mcard" href="#repositorio">
+        <span class="idx">02</span>
+        <h3>Repositório de books e fluxo</h3>
+        <p>Repositório de books e termos no SharePoint e o fluxo dos processos. Clique em cada etapa do fluxo para ver o detalhamento.</p>
+        <span class="go">Abrir repositório <span>→</span></span>
+      </a>
+      <a class="mcard" href="#processo">
+        <span class="idx">03</span>
+        <h3>Detalhamento do processo</h3>
+        <p>Passo a passo por responsável, decisões do fluxo, caminhos possíveis e regra de encerramento do chamado.</p>
+        <span class="go">Abrir detalhamento <span>→</span></span>
+      </a>
+    </div>
+    <p class="src">Fontes: planilha Gestão GRCAC – Implantação (Planner), exportada em 04/11/2026; fluxo GRCAC (Bizagi), 04/11/2026.</p>
+  </section>
+
+  <!-- ============ STATUS REPORT ============ -->
+  <section class="view" id="status">
+    <div class="eyebrow">Status report</div>
+    <h1>Status report completo</h1>
+    <p class="lead">221 ações distribuídas em 11 gates. Percentuais calculados sobre as ações de cada gate.</p>
+    <a class="btn btn-line" style="margin-top:16px" href="https://planner.cloud.microsoft/ui/web/plan/HfxfbYLylkaSFn02fIZpxGQABCAG/view/board?tid=54a7d922-61f3-4c7e-aee5-71be05bd4c9c" target="_blank" rel="noopener noreferrer">Abrir no Planner ↗</a>
+
+    <h2>Panorama</h2>
+    <div class="kpis" style="margin-top:0">
+      <div class="kpi g"><div class="n">97,7%</div><div class="t">216 de 221 ações concluídas</div></div>
+      <div class="kpi"><div class="n">10 de 11</div><div class="t">gates concluídos</div></div>
+      <div class="kpi a"><div class="n">5</div><div class="t">ações em andamento, todas no Gate 10</div></div>
+      <div class="kpi g"><div class="n">0</div><div class="t">ações atrasadas em aberto</div></div>
+    </div>
+
+    <h2>Ações por situação</h2>
+    <div class="grid3">
+      <div class="card">
+        <h3>Concluídas: 216</h3>
+        <p>93 no prazo (43%) e 123 após o prazo (57%). Atraso médio de 9 dias, mediana de 4 dias e maior atraso de 67 dias.</p>
+      </div>
+      <div class="card">
+        <h3>Em andamento: 5</h3>
+        <p>Todas do Gate 10, com prazo em 06/11. Responsáveis: Aldo (2) e Alisson (3). No Planner, constam como "Not started".</p>
+      </div>
+      <div class="card">
+        <h3>Atrasadas em aberto: 0 · Não iniciadas: 0</h3>
+        <p>Nenhuma ação em aberto passou do prazo. Todas as ações estão iniciadas ou concluídas.</p>
+      </div>
+    </div>
+
+    <h2>Status de todos os gates</h2>
+    <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th>Gate</th>
+            <th class="c">Ações</th>
+            <th>Conclusão</th>
+            <th class="c">Após o prazo</th>
+            <th class="c">Checklist</th>
+            <th class="c">Situação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Gate 0 · Início do projeto</td><td class="c">8 de 8</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">8</td><td class="c">2 de 2</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 01 · Entrevistas</td><td class="c">21 de 21</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">12</td><td class="c">12 de 23</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 02 · Análise funcional e riscos</td><td class="c">24 de 24</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">14</td><td class="c">28 de 31</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 03 · Validações</td><td class="c">22 de 22</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">7</td><td class="c">4 de 4</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 04 · Documentação técnica</td><td class="c">22 de 22</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">16</td><td class="c">66 de 66</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 05 · Configuração e parametrização</td><td class="c">23 de 23</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">21</td><td class="c">15 de 69</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 06 · Testes e simulações</td><td class="c">23 de 23</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">15</td><td class="c">5 de 22</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 07 · Homologação</td><td class="c">23 de 23</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">2</td><td class="c">–</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 08 · Termo de consentimento</td><td class="c">26 de 26</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">16</td><td class="c">23 de 23</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 09 · Go live</td><td class="c">23 de 23</td><td><span class="bar"><i style="width:100%"></i></span>100%</td><td class="c">11</td><td class="c">–</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Gate 10 · Ações de implantação</td><td class="c">1 de 6</td><td><span class="bar"><i class="amber" style="width:17%"></i></span>17%</td><td class="c">1</td><td class="c">–</td><td class="c"><span class="pill p-run">Em andamento</span></td></tr>
+          <tr class="tot"><td>Total</td><td class="c">216 de 221</td><td><span class="bar"><i style="width:97.7%"></i></span>97,7%</td><td class="c">123</td><td class="c">155 de 240</td><td class="c">–</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">"Após o prazo": ações concluídas depois da data limite. "Checklist": itens marcados nas ações de cada gate.</p>
+
+    <h2>Objetivos do projeto</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Objetivo</th><th>Gates vinculados</th><th class="c">Status</th></tr></thead>
+        <tbody>
+          <tr><td>Iniciar o setor com condições completas de execução</td><td>Gate 0</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Concluir a descoberta com necessidades validadas</td><td>Gate 01</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Garantir aderência funcional e tratamento dos riscos</td><td>Gate 02</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Aprovar perfis seguros e aderentes ao trabalho real</td><td>Gate 03</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Liberar à TOTVS uma especificação completa e inequívoca</td><td>Gate 04</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Liberar para testes configuração fiel à especificação</td><td>Gate 05</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Comprovar função, segurança e operação antes do Go Live</td><td>Gates 06 e 07</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+          <tr><td>Autorizar produção com prontidão e contingência</td><td>Gate 08</td><td class="c"><span class="pill p-done">Concluído</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">Status dos objetivos confirmado pela gestão: Gates 06, 07 e 08 concluídos e autorizados via termo.</p>
+
+    <h2>Atividades em andamento</h2>
+    <p class="lead" style="margin-top:0">Ações para a formalização do processo (Gate 10). Todas têm prazo de encerramento em 06/11/2026, em 2 dias.</p>
+    <div class="tbl" style="margin-top:14px">
+      <table>
+        <thead><tr><th>Atividade</th><th>Responsável</th><th class="c">Prazo de encerramento</th><th class="c">Situação</th></tr></thead>
+        <tbody>
+          <tr><td>Construir o fluxo do processo de atualização dos books</td><td>Aldo Pereira Brun Ribeiro</td><td class="c">06/11/2026</td><td class="c"><span class="pill p-run">Em andamento</span></td></tr>
+          <tr><td>Construir ou atualizar o formulário do RH</td><td>Aldo Pereira Brun Ribeiro</td><td class="c">06/11/2026</td><td class="c"><span class="pill p-run">Em andamento</span></td></tr>
+          <tr><td>Criar documento de mapeamento de acessos para apresentação ao Helysson</td><td>Alisson Santos</td><td class="c">06/11/2026</td><td class="c"><span class="pill p-run">Em andamento</span></td></tr>
+          <tr><td>Treinamento do fluxo com RH, Sustentação e todos os gerentes</td><td>Alisson Santos</td><td class="c">06/11/2026</td><td class="c"><span class="pill p-run">Em andamento</span></td></tr>
+          <tr><td>Reescrever o manual de controle de acessos conforme o fluxo</td><td>Alisson Santos</td><td class="c">06/11/2026</td><td class="c"><span class="pill p-run">Em andamento</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="src">Fonte: planilha Gestão GRCAC – Implantação (Planner), exportada em 04/11/2026. Situação conforme informado pela gestão.</p>
+  </section>
+
+  <!-- ============ REPOSITÓRIO E FLUXO ============ -->
+  <section class="view" id="repositorio">
+    <div class="eyebrow">Repositório e fluxo</div>
+    <h1>Repositório de books e fluxo</h1>
+    <p class="lead">Acesse o repositório de books e termos e navegue pelo fluxo. Clique em qualquer etapa para abrir o detalhamento.</p>
+
+    <div class="grid3" style="margin-top:26px">
+      <div class="card">
+        <h3>Repositório de books e termos</h3>
+        <p>Books de acesso e termos do projeto, no SharePoint do GRC/AC.</p>
+        <a class="btn" href="https://nordtechmaquinas.sharepoint.com/sites/PROJETOGRCAC/SitePages/ACESSO-BOOKS-GRCAC.aspx" target="_blank" rel="noopener noreferrer">Abrir repositório ↗</a>
+        <span class="url">nordtechmaquinas.sharepoint.com/sites/PROJETOGRCAC/SitePages/ACESSO-BOOKS-GRCAC.aspx</span>
+      </div>
+      <div class="card">
+        <h3>Detalhamento do processo</h3>
+        <p>Passo a passo por responsável, decisões do fluxo e caminhos possíveis.</p>
+        <a class="btn btn-line" href="#processo">Ver detalhamento</a>
+      </div>
+      <div class="card">
+        <h3>Planner do projeto</h3>
+        <p>Quadro de tarefas do projeto Gestão GRC/AC – Implantação, com as ações, gates e responsáveis.</p>
+        <a class="btn" href="https://planner.cloud.microsoft/ui/web/plan/HfxfbYLylkaSFn02fIZpxGQABCAG/view/board?tid=54a7d922-61f3-4c7e-aee5-71be05bd4c9c" target="_blank" rel="noopener noreferrer">Abrir Planner ↗</a>
+      </div>
+    </div>
+
+    <h2 style="margin-top:40px">Fluxo dos processos</h2>
+    <div class="flow-head">
+      <div class="hd"><div class="l">Entrada</div><div class="v">Tipo de acesso</div></div>
+      <div class="hd"><div class="l">Decisão</div><div class="v">Aprovação do Comitê</div></div>
+      <div class="hd"><div class="l">Saída</div><div class="v">Acesso liberado</div><div class="s">Book de Acesso atualizado</div></div>
+      <div class="hd warn"><div class="l">Regra</div><div class="v">Sem justificativa aceita</div><div class="s">Acesso não liberado e chamado encerrado</div></div>
+    </div>
+
+    <div class="legend">
+      <span class="it"><i class="lg st"></i>Início</span>
+      <span class="it"><i class="lg"></i>Atividade</span>
+      <span class="it"><i class="lg dec"></i>Decisão</span>
+      <span class="it"><i class="lg ev"></i>Evento</span>
+      <span class="it"><i class="lg en"></i>Fim</span>
+      <span class="hint">Clique em uma etapa para ver o detalhamento</span>
+    </div>
+
+    <div class="flow">
+      <svg viewBox="0 0 1280 650" role="img" aria-label="Fluxograma de liberação e atualização de acesso ao Protheus, por raia">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 z" fill="#3D4A66"/>
+          </marker>
+        </defs>
+
+        <!-- Raias -->
+        <rect x="0" y="0" width="1280" height="130" fill="#F8F9FC"/>
+        <rect x="0" y="130" width="1280" height="130" fill="#FFFFFF"/>
+        <rect x="0" y="260" width="1280" height="130" fill="#F8F9FC"/>
+        <rect x="0" y="390" width="1280" height="130" fill="#FFFFFF"/>
+        <rect x="0" y="520" width="1280" height="130" fill="#F8F9FC"/>
+        <g stroke="#DDE2EA" stroke-width="1.2">
+          <line x1="0" y1="130" x2="1280" y2="130"/>
+          <line x1="0" y1="260" x2="1280" y2="260"/>
+          <line x1="0" y1="390" x2="1280" y2="390"/>
+          <line x1="0" y1="520" x2="1280" y2="520"/>
+        </g>
+        <rect x="0" y="0" width="120" height="130" fill="#263155"/>
+        <rect x="0" y="130" width="120" height="130" fill="#263155"/>
+        <rect x="0" y="260" width="120" height="130" fill="#263155"/>
+        <rect x="0" y="390" width="120" height="130" fill="#263155"/>
+        <rect x="0" y="520" width="120" height="130" fill="#263155"/>
+        <g class="lane-name" text-anchor="middle">
+          <text x="60" y="70">Gestor da</text><text x="60" y="88">Área</text>
+          <text x="60" y="200">RH</text>
+          <text x="60" y="330">Comitê</text>
+          <text x="60" y="460">Sustentação</text>
+          <text x="60" y="590">GRC/AC</text>
+        </g>
+
+        <!-- Conectores -->
+        <g class="edges">
+          <polyline class="edge" points="187,84 210,84" marker-end="url(#arr)"/>
+          <polyline class="edge" points="360,84 406,84" marker-end="url(#arr)"/>
+          <polyline class="edge" points="454,84 490,84 490,206 520,206" marker-end="url(#arr)"/>
+          <polyline class="edge" points="430,108 430,344 742,344" marker-end="url(#arr)"/>
+          <polyline class="edge" points="690,206 735,206" marker-end="url(#arr)"/>
+          <polyline class="edge" points="817,246 817,300" marker-end="url(#arr)"/>
+          <polyline class="edge" points="892,344 926,344" marker-end="url(#arr)"/>
+          <polyline class="edge" points="948,322 948,227" marker-end="url(#arr)"/>
+          <polyline class="edge" points="948,201 948,84 1000,84" marker-end="url(#arr)"/>
+          <polyline class="edge" points="1145,84 1173,84" marker-end="url(#arr)"/>
+          <polyline class="edge" points="1217,84 1237,84" marker-end="url(#arr)"/>
+          <polyline class="edge" points="1195,106 1195,331" marker-end="url(#arr)"/>
+          <polyline class="edge" points="948,366 948,410 545,410 545,430" marker-end="url(#arr)"/>
+          <polyline class="edge" points="620,474 660,474" marker-end="url(#arr)"/>
+          <polyline class="edge" points="810,474 878,474" marker-end="url(#arr)"/>
+          <polyline class="edge" points="900,496 900,556" marker-end="url(#arr)"/>
+          <polyline class="edge" points="922,474 1250,474 1250,97" marker-end="url(#arr)"/>
+          <polyline class="edge" points="985,591 1062,591" marker-end="url(#arr)"/>
+        </g>
+
+        <!-- Textos das conexões -->
+        <text class="etxt" x="498" y="124">Novo / Movimentação</text>
+        <text class="etxt" x="438" y="326">Temporário</text>
+        <text class="etxt" x="956" y="402">Sim</text>
+        <text class="etxt" x="956" y="292">Não</text>
+        <text class="etxt" x="1203" y="200">Sim</text>
+        <text class="etxt" x="908" y="530">Sim</text>
+        <text class="etxt" x="1100" y="466" text-anchor="middle">Não</text>
+        <text class="etxt" x="1227" y="70" text-anchor="middle">Não</text>
+
+        <!-- Início -->
+        <g class="node" data-id="start" tabindex="0" role="button" aria-label="Início do processo">
+          <circle cx="175" cy="84" r="22" fill="transparent"/>
+          <circle class="sh" cx="175" cy="84" r="12" fill="#088A40"/>
+          <text class="lbl dtxt" x="175" y="58" text-anchor="middle">Início</text>
+        </g>
+
+        <!-- Etapa 1 -->
+        <g class="node" data-id="n1" tabindex="0" role="button" aria-label="Etapa 1: Solicitar acesso">
+          <rect class="sh" x="210" y="40" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="285" y="72" text-anchor="middle">Solicitar acesso</text>
+          <text class="sub" x="285" y="94" text-anchor="middle">Formulário em Word</text>
+          <text class="sub" x="285" y="110" text-anchor="middle">módulos e atividades</text>
+          <circle cx="210" cy="40" r="12" fill="#EC0734"/><text class="badge-t" x="210" y="44" text-anchor="middle">1</text>
+        </g>
+
+        <!-- Decisão Tipo de acesso -->
+        <g class="node" data-id="g1" tabindex="0" role="button" aria-label="Decisão: Tipo de acesso">
+          <polygon class="sh" points="430,60 454,84 430,108 406,84" fill="#FFF3CC" stroke="#C99700" stroke-width="1.5"/>
+          <text class="lbl dtxt" x="430" y="50" text-anchor="middle">Tipo acesso?</text>
+        </g>
+
+        <!-- Etapa 2: Contratação ou movimentação -->
+        <g class="node" data-id="n2" tabindex="0" role="button" aria-label="Etapa 2: Contratação ou movimentação">
+          <rect class="sh" x="520" y="158" width="170" height="96" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="605" y="190" text-anchor="middle">Contratação ou</text>
+          <text class="lbl ttl" x="605" y="208" text-anchor="middle">movimentação</text>
+          <text class="sub" x="605" y="232" text-anchor="middle">Rotina RH</text>
+          <circle cx="520" cy="158" r="12" fill="#EC0734"/><text class="badge-t" x="520" y="162" text-anchor="middle">2</text>
+        </g>
+
+        <!-- Etapa 2: Abrir chamado -->
+        <g class="node" data-id="n3" tabindex="0" role="button" aria-label="Etapa 2: Abrir chamado">
+          <rect class="sh" x="735" y="166" width="165" height="80" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="817.5" y="200" text-anchor="middle">Abrir chamado</text>
+          <text class="sub" x="817.5" y="220" text-anchor="middle">Anexa Form</text>
+          <circle cx="735" cy="166" r="12" fill="#EC0734"/><text class="badge-t" x="735" y="170" text-anchor="middle">2</text>
+        </g>
+
+        <!-- Etapa 3: Avaliar acesso -->
+        <g class="node" data-id="n4" tabindex="0" role="button" aria-label="Etapa 3: Avaliar acesso">
+          <rect class="sh" x="742" y="300" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="817" y="332" text-anchor="middle">Avaliar acesso</text>
+          <text class="sub" x="817" y="352" text-anchor="middle">Módulos e atividades</text>
+          <text class="sub" x="817" y="368" text-anchor="middle">e define o perfil</text>
+          <circle cx="742" cy="300" r="12" fill="#EC0734"/><text class="badge-t" x="742" y="304" text-anchor="middle">3</text>
+        </g>
+
+        <!-- Decisão Aprovado? -->
+        <g class="node" data-id="g2" tabindex="0" role="button" aria-label="Decisão: Aprovado?">
+          <polygon class="sh" points="948,322 970,344 948,366 926,344" fill="#FFF3CC" stroke="#C99700" stroke-width="1.5"/>
+          <text class="lbl dtxt" x="978" y="349">Aprovado?</text>
+        </g>
+
+        <!-- Evento RH notificado -->
+        <g class="node" data-id="ev1" tabindex="0" role="button" aria-label="Evento: RH notificado">
+          <circle class="sh" cx="948" cy="214" r="13" fill="#FFFFFF" stroke="#1A2340" stroke-width="2"/>
+          <text class="lbl dtxt" x="970" y="218">RH notificado</text>
+        </g>
+
+        <!-- Etapa 4: Justificar -->
+        <g class="node" data-id="n8" tabindex="0" role="button" aria-label="Etapa 4: Justificar">
+          <rect class="sh" x="1000" y="40" width="145" height="88" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="1072.5" y="72" text-anchor="middle">Justificar</text>
+          <text class="sub" x="1072.5" y="94" text-anchor="middle">Motivo para liberação</text>
+          <text class="sub" x="1072.5" y="110" text-anchor="middle">ou alteração</text>
+          <circle cx="1000" cy="40" r="12" fill="#EC0734"/><text class="badge-t" x="1000" y="44" text-anchor="middle">4</text>
+        </g>
+
+        <!-- Decisão Justificado? -->
+        <g class="node" data-id="g4" tabindex="0" role="button" aria-label="Decisão: Justificado?">
+          <polygon class="sh" points="1195,62 1217,84 1195,106 1173,84" fill="#FFF3CC" stroke="#C99700" stroke-width="1.5"/>
+          <text class="lbl dtxt" x="1195" y="50" text-anchor="middle">Justificado?</text>
+        </g>
+
+        <!-- Fim (topo) -->
+        <g class="node" data-id="end1" tabindex="0" role="button" aria-label="Fim: Chamado encerrado">
+          <circle class="sh" cx="1250" cy="84" r="13" fill="#EC0734"/>
+        </g>
+
+        <!-- Evento Avaliação do Comitê -->
+        <g class="node" data-id="ev2" tabindex="0" role="button" aria-label="Evento: Avaliação do Comitê">
+          <circle class="sh" cx="1195" cy="344" r="13" fill="#FFFFFF" stroke="#1A2340" stroke-width="2"/>
+          <text class="lbl dtxt" x="1195" y="378" text-anchor="middle">Avaliação do Comitê</text>
+        </g>
+
+        <!-- Etapa 5: Complementar chamado -->
+        <g class="node" data-id="n5" tabindex="0" role="button" aria-label="Etapa 5: Complementar chamado">
+          <rect class="sh" x="470" y="430" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="545" y="462" text-anchor="middle">Complementar</text>
+          <text class="lbl ttl" x="545" y="480" text-anchor="middle">chamado</text>
+          <text class="sub" x="545" y="502" text-anchor="middle">Indica o perfil</text>
+          <circle cx="470" cy="430" r="12" fill="#EC0734"/><text class="badge-t" x="470" y="434" text-anchor="middle">5</text>
+        </g>
+
+        <!-- Etapa 5: Atualizar ou criar perfil -->
+        <g class="node" data-id="n6" tabindex="0" role="button" aria-label="Etapa 5: Atualizar ou criar perfil">
+          <rect class="sh" x="660" y="430" width="150" height="88" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="735" y="462" text-anchor="middle">Atualizar ou</text>
+          <text class="lbl ttl" x="735" y="480" text-anchor="middle">criar perfil</text>
+          <text class="sub" x="735" y="502" text-anchor="middle">Encerra o chamado</text>
+          <circle cx="660" cy="430" r="12" fill="#EC0734"/><text class="badge-t" x="660" y="434" text-anchor="middle">5</text>
+        </g>
+
+        <!-- Decisão Novo perfil? -->
+        <g class="node" data-id="g3" tabindex="0" role="button" aria-label="Decisão: Novo perfil?">
+          <polygon class="sh" points="900,452 922,474 900,496 878,474" fill="#FFF3CC" stroke="#C99700" stroke-width="1.5"/>
+          <text class="lbl dtxt" x="900" y="440" text-anchor="middle">Novo perfil?</text>
+        </g>
+
+        <!-- Etapa 6: Atualizar Book de Acesso -->
+        <g class="node" data-id="n7" tabindex="0" role="button" aria-label="Etapa 6: Atualizar Book de Acesso">
+          <rect class="sh" x="815" y="556" width="170" height="70" rx="8" fill="#FFFFFF" stroke="#1A2340" stroke-width="1.5"/>
+          <text class="lbl ttl" x="900" y="584" text-anchor="middle">Atualizar Book</text>
+          <text class="lbl ttl" x="900" y="602" text-anchor="middle">de Acesso</text>
+          <circle cx="815" cy="556" r="12" fill="#EC0734"/><text class="badge-t" x="815" y="560" text-anchor="middle">6</text>
+        </g>
+
+        <!-- Fim (GRC/AC) -->
+        <g class="node" data-id="end2" tabindex="0" role="button" aria-label="Fim: Chamado encerrado">
+          <circle class="sh" cx="1075" cy="591" r="13" fill="#EC0734"/>
+          <text class="lbl dtxt" x="1095" y="596">Chamado encerrado</text>
+        </g>
+      </svg>
+    </div>
+    <p class="src">Fonte: fluxo GRCAC (Bizagi), 04/11/2026.</p>
+  </section>
+
+  <!-- ============ DETALHAMENTO ============ -->
+  <section class="view" id="processo">
+    <div class="eyebrow">Detalhamento do processo</div>
+    <h1>Liberação e atualização de acesso ao Protheus</h1>
+    <p class="lead">Cada etapa mostra o responsável, o que ele faz e a saída esperada. Todo acesso passa pelo Comitê, direto no caso temporário ou após a contratação e a abertura do chamado pelo RH.</p>
+
+    <div class="key">
+      <div class="tag">Regra de encerramento</div>
+      <div class="big">Sem justificativa aceita, o chamado é encerrado</div>
+      <p>O acesso não é liberado quando a justificativa do gestor não é aceita.</p>
+    </div>
+
+    <h2>Etapas</h2>
+    <div class="grid2">
+      <div class="step">
+        <div class="num">1</div>
+        <div>
+          <div class="who">Gestor da Área</div>
+          <h3>Solicitar acesso</h3>
+          <ul>
+            <li>Tipo: formulário em Word, com módulos e atividades.</li>
+            <li>Definir o tipo: novo ou movimentação, ou temporário.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <div>
+          <div class="who">RH</div>
+          <h3>Contratação ou movimentação</h3>
+          <ul>
+            <li>Executar a rotina de RH para contratação ou movimentação.</li>
+            <li>Abrir o chamado, anexando o Form. O gestor passa a ser acompanhante.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <div>
+          <div class="who">Comitê</div>
+          <h3>Avaliar acesso</h3>
+          <ul>
+            <li>Avaliar módulos, atividades e rotinas.</li>
+            <li>Definir o perfil. Se aprovado, segue para a Sustentação.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <div>
+          <div class="who">Gestor da Área</div>
+          <h3>Justificar</h3>
+          <ul>
+            <li>Quando o acesso não é aprovado, informar o motivo para liberação ou alteração.</li>
+            <li>A justificativa volta para avaliação do Comitê.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">5</div>
+        <div>
+          <div class="who">Sustentação</div>
+          <h3>Complementar chamado e atualizar ou criar perfil</h3>
+          <ul>
+            <li>Indicar o perfil ou o novo perfil no chamado.</li>
+            <li>Atualizar ou criar o perfil e encerrar o chamado.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="step">
+        <div class="num">6</div>
+        <div>
+          <div class="who">GRC/AC</div>
+          <h3>Atualizar Book de Acesso</h3>
+          <ul>
+            <li>Atualizar o Book de Acesso quando for criado um novo perfil.</li>
+            <li>Com isso, o chamado é encerrado.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <h2>Decisões do fluxo</h2>
+    <div class="tbl">
+      <table>
+        <thead><tr><th>Decisão</th><th>Caminho</th><th>Próxima etapa</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2"><b>Tipo de acesso?</b></td><td>Novo / Movimentação</td><td>RH (etapa 2)</td></tr>
+          <tr><td>Temporário</td><td>Comitê (etapa 3), direto</td></tr>
+          <tr><td rowspan="2"><b>Aprovado?</b></td><td>Sim</td><td>Sustentação (etapa 5)</td></tr>
+          <tr><td>Não</td><td>RH notificado, depois gestor justifica (etapa 4)</td></tr>
+          <tr><td rowspan="2"><b>Justificado?</b></td><td>Sim</td><td>Volta ao Comitê para nova avaliação</td></tr>
+          <tr><td>Não</td><td>Chamado encerrado</td></tr>
+          <tr><td rowspan="2"><b>Novo perfil?</b></td><td>Sim</td><td>GRC/AC atualiza o Book de Acesso (etapa 6)</td></tr>
+          <tr><td>Não</td><td>Chamado encerrado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2>Caminhos possíveis</h2>
+    <div class="grid3">
+      <div class="card">
+        <h3>Novo ou movimentação</h3>
+        <p class="path"><b>Gestor</b> → <b>RH</b> → <b>Comitê</b> → Aprovado → <b>Sustentação</b> → Novo perfil → <b>GRC/AC</b> → chamado encerrado.</p>
+      </div>
+      <div class="card">
+        <h3>Temporário</h3>
+        <p class="path"><b>Gestor</b> → <b>Comitê</b> → Aprovado → <b>Sustentação</b> → Novo perfil → <b>GRC/AC</b> → chamado encerrado.</p>
+      </div>
+      <div class="card">
+        <h3>Não aprovado</h3>
+        <p class="path"><b>Comitê</b> → RH notificado → <b>Gestor</b> justifica → Justificado: volta ao <b>Comitê</b>. Sem justificativa aceita: chamado encerrado.</p>
+      </div>
+    </div>
+    <p class="src">Fonte: fluxo GRCAC (Bizagi), 04/11/2026. Clique nas etapas do fluxo em "Repositório e fluxo" para ver o detalhamento de cada uma.</p>
+  </section>
+
+</main>
+
+<!-- Caixa de detalhamento de cada etapa do fluxo -->
+<dialog id="dlg" aria-labelledby="dTitle">
+  <div class="dlg">
+    <button class="dlg-x" id="dClose" aria-label="Fechar">×</button>
+    <span class="dlg-tag" id="dTag"></span>
+    <h3 id="dTitle"></h3>
+    <div class="dlg-lane" id="dLane"></div>
+    <h4>O que acontece</h4>
+    <p id="dDesc"></p>
+    <h4>Saídas</h4>
+    <ul id="dOuts"></ul>
+    <div class="dlg-note" id="dNote" hidden></div>
+    <a class="btn btn-line" id="dLink" href="#processo">Ver detalhamento completo</a>
+  </div>
+</dialog>
+
+<script>
+const NODES = {
+  start:{tag:'Início', title:'Início do processo', lane:'Raia: Gestor da Área', desc:'Ponto de partida do processo de liberação e atualização de acesso ao Protheus.', outs:['Segue para a etapa 1: solicitar o acesso.']},
+  n1:{tag:'Etapa 1', title:'Solicitar acesso', lane:'Raia: Gestor da Área', desc:'Tipo: formulário em Word, com módulos e atividades. O gestor solicita o acesso informando os módulos e as atividades necessárias.', outs:['Segue para a decisão "Tipo de acesso?".']},
+  g1:{tag:'Decisão', title:'Tipo de acesso?', lane:'Raia: Gestor da Área', desc:'Define o caminho do processo a partir do tipo de acesso solicitado.', outs:['Novo / Movimentação: segue para o RH (etapa 2).','Temporário: segue direto para o Comitê (etapa 3).']},
+  n2:{tag:'Etapa 2', title:'Contratação ou movimentação', lane:'Raia: RH', desc:'O RH executa a rotina para contratação ou movimentação do colaborador.', outs:['Segue para a abertura do chamado pelo RH (etapa 2).']},
+  n3:{tag:'Etapa 2', title:'Abrir chamado', lane:'Raia: RH', desc:'O RH abre o chamado anexando o Form. O gestor passa a ser acompanhante do chamado.', outs:['Segue para a avaliação do Comitê (etapa 3).']},
+  n4:{tag:'Etapa 3', title:'Avaliar acesso', lane:'Raia: Comitê', desc:'O Comitê avalia módulos, atividades e rotinas e define o perfil de acesso.', outs:['Segue para a decisão "Aprovado?".']},
+  g2:{tag:'Decisão', title:'Aprovado?', lane:'Raia: Comitê', desc:'Verifica se o Comitê aprovou o acesso.', outs:['Sim: segue para a complementação do chamado pela Sustentação (etapa 5).','Não: RH é notificado e o gestor justifica (etapa 4).']},
+  ev1:{tag:'Evento', title:'RH notificado', lane:'Raia: RH', desc:'Notificação ao RH quando o acesso não é aprovado pelo Comitê.', outs:['Segue para a justificativa do gestor (etapa 4).']},
+  n8:{tag:'Etapa 4', title:'Justificar', lane:'Raia: Gestor da Área', desc:'O gestor informa o motivo para liberação ou alteração do acesso.', outs:['Segue para a decisão "Justificado?".']},
+  g4:{tag:'Decisão', title:'Justificado?', lane:'Raia: Gestor da Área', desc:'Verifica se a justificativa do gestor foi aceita.', outs:['Sim: volta para a avaliação do Comitê.','Não: sem justificativa aceita, o chamado é encerrado.']},
+  ev2:{tag:'Evento', title:'Avaliação do Comitê', lane:'Raia: Comitê', desc:'Reavaliação do acesso pelo Comitê após a justificativa do gestor.', outs:[]},
+  n5:{tag:'Etapa 5', title:'Complementar chamado', lane:'Raia: Sustentação', desc:'A Sustentação complementa o chamado indicando o perfil ou o novo perfil.', outs:['Segue para atualizar ou criar o perfil.']},
+  n6:{tag:'Etapa 5', title:'Atualizar ou criar perfil', lane:'Raia: Sustentação', desc:'A Sustentação atualiza ou cria o perfil e encerra o chamado.', outs:['Segue para a decisão "Novo perfil?".']},
+  g3:{tag:'Decisão', title:'Novo perfil?', lane:'Raia: Sustentação', desc:'Verifica se foi criado um novo perfil.', outs:['Sim: GRC/AC atualiza o Book de Acesso (etapa 6).','Não: chamado encerrado.']},
+  n7:{tag:'Etapa 6', title:'Atualizar Book de Acesso', lane:'Raia: GRC/AC', desc:'O GRC/AC atualiza o Book de Acesso com o novo perfil.', outs:['Chamado encerrado.']},
+  end1:{tag:'Fim', title:'Chamado encerrado', lane:'Fim do processo', desc:'Encerramento do chamado quando não há justificativa aceita ou quando não é criado novo perfil.', outs:[]},
+  end2:{tag:'Fim', title:'Chamado encerrado', lane:'Raia: GRC/AC', desc:'Encerramento do chamado após a atualização do Book de Acesso.', outs:[]}
+};
+
+const views = ['home','status','repositorio','processo'];
+const dlg = document.getElementById('dlg');
+
+function route(){
+  if (dlg.open) dlg.close();
+  const name = location.hash.slice(1) || 'home';
+  const v = views.includes(name) ? name : 'home';
+  views.forEach(id => document.getElementById(id).classList.toggle('on', id === v));
+  document.querySelectorAll('[data-nav]').forEach(a => {
+    if (a.dataset.nav === v) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+  });
+  window.scrollTo(0,0);
+  const eb = document.querySelector('#' + v + ' .eyebrow');
+  document.title = (v === 'home' ? '' : eb.textContent + ' · ') + 'Gestão GRC/AC · Implantação';
+}
+window.addEventListener('hashchange', route);
+
+function openNode(id){
+  const n = NODES[id]; if (!n) return;
+  document.getElementById('dTag').textContent = n.tag;
+  document.getElementById('dTitle').textContent = n.title;
+  document.getElementById('dLane').textContent = n.lane;
+  document.getElementById('dDesc').textContent = n.desc;
+  const ul = document.getElementById('dOuts');
+  ul.innerHTML = '';
+  if (n.outs.length) n.outs.forEach(t => { const li = document.createElement('li'); li.textContent = t; ul.appendChild(li); });
+  else { const li = document.createElement('li'); li.textContent = 'Não há saída: ponto de reavaliação do fluxo.'; ul.appendChild(li); }
+  const note = document.getElementById('dNote');
+  if (n.note){ note.textContent = n.note; note.hidden = false; } else { note.hidden = true; }
+  dlg.showModal();
+  document.getElementById('dClose').focus();
+}
+
+document.querySelectorAll('.node').forEach(g => {
+  g.addEventListener('click', () => openNode(g.dataset.id));
+  g.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openNode(g.dataset.id); }
+  });
+});
+document.getElementById('dClose').addEventListener('click', () => dlg.close());
+dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });
+document.getElementById('dLink').addEventListener('click', () => dlg.close());
+
+route();
+</script>
+</body>
+</html>
